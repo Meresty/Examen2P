@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Catalogo> 
+    <producto id="1">
+        <nombre>Computadora Asus</nombre>
+        <precio>23000</precio>
+        <descripcion>Computadora Asus ROG Strix</descripcion>
+        <imagen>images/ComputadoraAsus.jpg</imagen>
+    </producto>
+
+    <producto id="2">
+        <nombre>Tablet</nombre>
+        <precio>13000</precio>
+        <descripcion>iPad 9na generación 128GB</descripcion>
+        <imagen>images/tablen9na.jpg</imagen>
+    </producto>
+
+    <producto id="3">
+        <nombre>Computadora HP</nombre>
+        <precio>11000</precio>
+        <descripcion>Computadora HP Desktop HN800</descripcion>
+        <imagen>images/CompuDesk.jpg</imagen>
+    </producto>
+
+    <producto id="4">
+        <nombre>Telefono Oppo</nombre>
+        <precio>8000</precio>
+        <descripcion>Telefono Oppo Reno 10 128GB</descripcion>
+        <imagen>images/Oppo.jpg</imagen>
+    </producto>
+
+    <producto id="5">
+        <nombre>Telefono iphone</nombre>
+        <precio>6000</precio>
+        <descripcion>iPhone 13 128GB</descripcion>
+        <imagen>images/iphone.jpg</imagen>
+    </producto>
+</Catalogo>

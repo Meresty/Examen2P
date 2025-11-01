@@ -1,0 +1,70 @@
+/* ✅ Nuevo bloque para PayPal */
+#paypal-button-container {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+#paypal-button-container:hover {
+  transform: scale(1.02);
+}
+
+/* El resto es tu CSS original */
+.contenedor-carrito {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.titulo-carrito {
+  text-align: center;
+  color: #333;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+}
+
+.btn-exportar {
+  flex: 1;
+  background: #47051a;
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-exportar:hover {
+  background: #6a0c2b;
+}
+
+.carrito-vacio {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+}
+
+.btn-vaciar {
+  display: inline-block;
+  background: #4b041f;
+  color: white;
+  padding: 0.8rem 2rem;
+  border-radius: 25px;
+  text-decoration: none;
+  margin-top: 1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-vaciar:hover {
+  background: #6a0c2b;
+}
+
+/* ... (tu CSS restante igual) ... */
+
+@media (max-width: 768px) {
+  #paypal-button-container {
+    justify-content: center;
+  }
+}

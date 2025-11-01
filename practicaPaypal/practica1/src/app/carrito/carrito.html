@@ -1,0 +1,94 @@
+<div class="contenedor-carrito">
+  <h2 class="titulo-carrito">Tu Carrito de compras</h2>
+
+  <!-- Carrito vacío -->
+  <div *ngIf="cartItems.length === 0" class="carrito-vacio">
+    <p>Tu carrito está vacío, compraaaaaa</p>
+    <a routerLink="/catalogo" class="btn-vaciar">Ver catálogo</a>
+  </div>
+
+  <!-- Contenido del carrito -->
+  <div *ngIf="cartItems.length > 0" class="carrito-contenido">
+    <div class="lista-items">
+      <div
+        *ngFor="let item of cartItems; trackBy: trackByProductId"
+        class="item-carrito"
+      >
+        <img
+          [src]="item.product.imagen"
+          [alt]="item.product.nombre"
+          class="img-item"
+          loading="lazy"
+        />
+
+        <div class="info-item">
+          <h4 class="nombre-item">{{ item.product.nombre }}</h4>
+          <p class="descripcion-item">{{ item.product.descripcion }}</p>
+          <span class="precio-unitario">${{ item.product.precio }}</span>
+        </div>
+
+        <div class="controles-cantidad">
+          <button
+            type="button"
+            class="btn-cantidad"
+            aria-label="Disminuir cantidad"
+            (click)="actualizar(item, item.quantity - 1)"
+          >
+            −
+          </button>
+          <span class="cantidad" aria-live="polite">{{ item.quantity }}</span>
+          <button
+            type="button"
+            class="btn-cantidad"
+            aria-label="Aumentar cantidad"
+            (click)="actualizar(item, item.quantity + 1)"
+          >
+            +
+          </button>
+        </div>
+
+        <div class="precio-total">
+          ${{ (item.product.precio * item.quantity).toFixed(2) }}
+        </div>
+
+        <button
+          type="button"
+          class="btn-remover"
+          title="Quitar del carrito"
+          aria-label="Quitar del carrito"
+          (click)="quitar(item)"
+        >
+          🗑️
+        </button>
+      </div>
+    </div>
+
+    <!-- Acciones -->
+    <div class="acciones-carrito">
+      <button type="button" class="btn-limpiar" (click)="vaciar()">
+        Limpiar carrito
+      </button>
+      <button type="button" class="btn-exportar" (click)="exportarXML()">
+        Exportar Factura XML
+      </button>
+    </div>
+
+    <!-- Resumen + PayPal -->
+    <div class="resumen-carrito">
+      <div class="fila-resumen total">
+        <span>Total:</span>
+        <span>${{ totalPrecio | number: '1.2-2' }}</span>
+      </div>
+
+      <!-- Skeleton opcional mientras carga el SDK -->
+      <div
+        id="paypal-skeleton"
+        *ngIf="cartItems.length > 0 && totalPrecio > 0"
+        style="height: 45px; margin-top: 12px;"
+      ></div>
+
+      <!-- Contenedor donde PayPal renderiza el botón -->
+      <div id="paypal-button-container"></div>
+    </div>
+  </div>
+</div>

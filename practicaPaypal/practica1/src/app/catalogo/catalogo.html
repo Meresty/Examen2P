@@ -1,0 +1,36 @@
+<!-- ...encabezado igual... -->
+
+<div class="contenedor-catalogo">
+  <div *ngFor="let producto of productos" class="card-producto">
+    <div class="card-imagen">
+      <img [src]="producto.imagen" [alt]="producto.nombre" loading="lazy">
+    </div>
+
+    <div class="card-contenido">
+      <h3 class="nombre-producto">{{ producto.nombre }}</h3>
+      <p class="descripcion-producto">{{ producto.descripcion }}</p>
+
+      <div class="info-precio">
+        <span class="precio">${{ producto.precio }}</span>
+        <small *ngIf="producto.stock > 0">Stock: {{ producto.stock }}</small>
+        <small *ngIf="producto.stock === 0" style="color:#b00;font-weight:600;">Agotado</small>
+
+        <div *ngIf="getCantidadEnCarrito(producto.id) > 0" class="contador-carrito-producto">
+          <button (click)="carritoService.actualizarCantidad(producto.id, getCantidadEnCarrito(producto.id) - 1)"
+            class="btn-cantidad">-</button>
+          <span class="cantidad">{{ getCantidadEnCarrito(producto.id) }}</span>
+          <button [disabled]="getCantidadEnCarrito(producto.id) >= producto.stock"
+            (click)="carritoService.actualizarCantidad(producto.id, getCantidadEnCarrito(producto.id) + 1)"
+            class="btn-cantidad">+</button>
+        </div>
+
+        <button *ngIf="getCantidadEnCarrito(producto.id) === 0"
+          class="btn-comprar"
+          [disabled]="producto.stock === 0"
+          (click)="agregarAlCarrito(producto)">
+          {{ producto.stock === 0 ? 'Agotado' : 'Agregar al carrito' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
