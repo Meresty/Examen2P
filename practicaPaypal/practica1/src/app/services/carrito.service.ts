@@ -71,6 +71,18 @@ export class CarritoService {
     return this.cartItems.reduce((total, item) => total + (item.product.precio * item.quantity), 0);
   }
 
+  obtenerSubtotal(): number {
+  return this.cartItems.reduce((total, item) => total + (item.product.precio * item.quantity), 0);
+  }
+
+  obtenerIVA(): number {
+  return this.obtenerSubtotal() * 0.16;
+  }
+
+  obtenerTotalConIVA(): number {
+  return this.obtenerSubtotal() + this.obtenerIVA();
+  }
+
 
   limpiarCarrito(): void {
     this.cartItems = [];
@@ -78,13 +90,12 @@ export class CarritoService {
     this.cartSubject.next(this.cartItems);
   }
 
-  private guardarCarrito(): void {
+  public guardarCarrito(): void {
     localStorage.setItem('carrito', JSON.stringify(this.cartItems));
   }
 
 
-  exportarXML(): void {
-
+exportarXML(): void {
   const escapeXML = (str: string) =>
     str
       .replace(/&/g, '&amp;')
@@ -93,32 +104,39 @@ export class CarritoService {
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&apos;');
 
+  const subtotal = this.obtenerSubtotal();
+  const iva = this.obtenerIVA();
+  const total = this.obtenerTotalConIVA();
+
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-  xml += `<recibo id="${Date.now()}">\n`;
+  xml += `<factura id="${Date.now()}">\n`;
   xml += `  <fecha>${new Date().toISOString()}</fecha>\n`;
+  xml += `  <productos>\n`;
 
   for (const item of this.cartItems) {
-    xml += `  <producto>\n`;
-    xml += `    <id>${item.product.id}</id>\n`;
-    xml += `    <nombre>${escapeXML(item.product.nombre)}</nombre>\n`;
-    xml += `    <precio>${item.product.precio}</precio>\n`;
-    xml += `    <cantidad>${item.quantity}</cantidad>\n`;
-    if (item.product.descripcion) {
-      xml += `    <descripcion>${escapeXML(item.product.descripcion)}</descripcion>\n`;
-    }
-    xml += `  </producto>\n`;
+    xml += `    <producto>\n`;
+    xml += `      <id>${item.product.id}</id>\n`;
+    xml += `      <nombre>${escapeXML(item.product.nombre)}</nombre>\n`;
+    xml += `      <precio>${item.product.precio}</precio>\n`;
+    xml += `      <cantidad>${item.quantity}</cantidad>\n`;
+    xml += `      <importe>${item.product.precio * item.quantity}</importe>\n`;
+    xml += `    </producto>\n`;
   }
 
-  xml += `  <total>${this.obtenerTotalPrecio()}</total>\n`;
-  xml += `</recibo>`;
+  xml += `  </productos>\n`;
+  xml += `  <subtotal>${subtotal.toFixed(2)}</subtotal>\n`;
+  xml += `  <iva>${iva.toFixed(2)}</iva>\n`;
+  xml += `  <total>${total.toFixed(2)}</total>\n`;
+  xml += `</factura>`;
 
   const blob = new Blob([xml], { type: 'application/xml' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `recibo_${new Date().toISOString().split('T')[0]}.xml`;
+  a.download = `factura_${new Date().toISOString().split('T')[0]}.xml`;
   a.click();
   URL.revokeObjectURL(url);
 }
+
   
 }

@@ -7,7 +7,7 @@
     <a routerLink="/catalogo" class="btn-vaciar">Ver catálogo</a>
   </div>
 
-  <!-- Contenido del carrito -->
+  <!-- Carrito con productos -->
   <div *ngIf="cartItems.length > 0" class="carrito-contenido">
     <div class="lista-items">
       <div
@@ -24,7 +24,9 @@
         <div class="info-item">
           <h4 class="nombre-item">{{ item.product.nombre }}</h4>
           <p class="descripcion-item">{{ item.product.descripcion }}</p>
-          <span class="precio-unitario">${{ item.product.precio }}</span>
+          <span class="precio-unitario"
+            >${{ item.product.precio | number: '1.2-2' }}</span
+          >
         </div>
 
         <div class="controles-cantidad">
@@ -63,31 +65,38 @@
       </div>
     </div>
 
-    <!-- Acciones -->
+    <!-- Botones de acción -->
     <div class="acciones-carrito">
       <button type="button" class="btn-limpiar" (click)="vaciar()">
         Limpiar carrito
       </button>
-      <button type="button" class="btn-exportar" (click)="exportarXML()">
-        Exportar Factura XML
-      </button>
     </div>
 
-    <!-- Resumen + PayPal -->
+    <!-- 💵 Resumen del pedido -->
     <div class="resumen-carrito">
-      <div class="fila-resumen total">
-        <span>Total:</span>
-        <span>${{ totalPrecio | number: '1.2-2' }}</span>
+      <h3>Resumen de compra</h3>
+      <div class="fila-resumen">
+        <span>Subtotal:</span>
+        <span>${{ carritoService.obtenerSubtotal() | number: '1.2-2' }}</span>
       </div>
 
-      <!-- Skeleton opcional mientras carga el SDK -->
+      <div class="fila-resumen">
+        <span>IVA (16%):</span>
+        <span>${{ carritoService.obtenerIVA() | number: '1.2-2' }}</span>
+      </div>
+
+      <div class="fila-resumen total">
+        <strong>Total a pagar:</strong>
+        <strong>${{ carritoService.obtenerTotalConIVA() | number: '1.2-2' }}</strong>
+      </div>
+
+      <!-- Botón PayPal -->
       <div
         id="paypal-skeleton"
         *ngIf="cartItems.length > 0 && totalPrecio > 0"
         style="height: 45px; margin-top: 12px;"
       ></div>
 
-      <!-- Contenedor donde PayPal renderiza el botón -->
       <div id="paypal-button-container"></div>
     </div>
   </div>
